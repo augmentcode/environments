@@ -277,7 +277,7 @@ build-gpt-neox-deepspeed-gpu: build-gpu-cuda-117-base
 		--build-arg TORCH_CUDA_ARCH_LIST="6.0;6.1;6.2;7.0;7.5;8.0" \
 		--build-arg APEX_GIT="https://github.com/NVIDIA/apex.git" \
 		--build-arg DET_BUILD_NCCL="" \
-		--build-arg DEEPSPEED_PIP="git+https://github.com/augmentcode/DeeperSpeed.git@7a514ecdcbe4a7c5c8e2ce5900c73af6c596ca46" \
+		--build-arg DEEPSPEED_PIP="git+https://github.com/augmentcode/DeeperSpeed.git@ea3711b1d6b2134d8ad1be26854ff0d9f60c383f" \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME)-$(SHORT_GIT_HASH) \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME)-$(VERSION) \
 		-t $(NGC_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME)-$(SHORT_GIT_HASH) \
