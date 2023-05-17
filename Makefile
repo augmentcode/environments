@@ -335,8 +335,6 @@ build-gpt-neox-deepspeed-gpu: build-gpu-cuda-117-base
 		--build-arg DEEPSPEED_PIP="git+https://github.com/augmentcode/DeeperSpeed.git@ea3711b1d6b2134d8ad1be26854ff0d9f60c383f" \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME)-$(SHORT_GIT_HASH) \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME)-$(VERSION) \
-		-t $(NGC_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME)-$(SHORT_GIT_HASH) \
-		-t $(NGC_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME)-$(VERSION) \
 		-o type=image,push=false \
 		.
 
@@ -357,8 +355,6 @@ build-gpt-neox-deepspeed-gpu-torch-201: build-gpu-cuda-117-base
 		--build-arg DEEPSPEED_PIP="git+https://github.com/augmentcode/DeeperSpeed.git@ea3711b1d6b2134d8ad1be26854ff0d9f60c383f" \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_201)-$(SHORT_GIT_HASH) \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_201)-$(VERSION) \
-		-t $(NGC_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_201)-$(SHORT_GIT_HASH) \
-		-t $(NGC_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_201)-$(VERSION) \
 		-o type=image,push=false \
 		.
 
