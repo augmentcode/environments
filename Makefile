@@ -242,8 +242,8 @@ build-pytorch10-tf27-rocm50:
 
 DEEPSPEED_VERSION := 0.7.0
 export GPU_DEEPSPEED_ENVIRONMENT_NAME := $(CUDA_117_PREFIX)pytorch-1.13-tf-2.8-deepspeed-$(DEEPSPEED_VERSION)$(GPU_SUFFIX)
-export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME := $(CUDA_117_PREFIX)$(PY_39_TAG)pytorch-1.13-tf-2.8-gpt-neox-deepspeed$(GPU_SUFFIX)
-export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_201 := $(CUDA_117_PREFIX)$(PY_39_TAG)pytorch-2.0.1-tf-2.8-gpt-neox-deepspeed$(GPU_SUFFIX)
+export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME := $(CUDA_117_PREFIX)$(PY_39_TAG)pytorch-1.13-gpt-neox-deepspeed$(GPU_SUFFIX)
+export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_201 := $(CUDA_117_PREFIX)$(PY_39_TAG)pytorch-2.0.1-gpt-neox-deepspeed$(GPU_SUFFIX)
 export TORCH_PIP_DEEPSPEED_GPU := torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1+cu117 -f https://download.pytorch.org/whl/cu117/torch_stable.html
 export TORCH_PIP_DEEPSPEED_GPU_201 := torch==2.0.1+cu117 torchvision==0.15.2+cu117 torchaudio==2.0.2+cu117 -f https://download.pytorch.org/whl/cu117/torch_stable.html
 export TORCH_TB_PROFILER_PIP := torch-tb-profiler==0.4.1
