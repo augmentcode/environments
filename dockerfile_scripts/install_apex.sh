@@ -3,12 +3,27 @@
 set -e
 
 if [ "$APEX_GIT" ]; then
-  pip install \
-      -v \
-      --disable-pip-version-check \
-      --no-cache-dir \
-      --no-build-isolation \
-      --global-option="--cpp_ext" \
-      --global-option="--cuda_ext" \
-      git+$APEX_GIT
+  if [ "$APEX_PATCH" == 1 ]; then
+    APEX_DIR=/tmp/apex/
+    APEX_GIT_URL="${APEX_GIT%@*}"
+    APEX_GIT_VER="${APEX_GIT#*@}"
+    git clone "$APEX_GIT_URL" "$APEX_DIR"
+    pushd "$APEX_DIR"
+    git checkout "$APEX_GIT_VER"
+    git apply /tmp/det_dockerfile_scripts/apex.patch
+    popd
+    pip install \
+        --no-cache-dir \
+        --no-build-isolation \
+        --config-settings "--build-option=--cpp_ext" \
+        --config-settings "--build-option=--cuda_ext" \
+        "$APEX_DIR"
+  else
+    pip install \
+        --no-cache-dir \
+        --no-build-isolation \
+        --config-settings "--build-option=--cpp_ext" \
+        --config-settings "--build-option=--cuda_ext" \
+        git+$APEX_GIT
+  fi
 fi
