@@ -4,8 +4,8 @@ set -e
 
 DEBIAN_FRONTEND=noninteractive apt-get install -y pdsh libaio-dev
 # Triton is needed to build deepspeed's sparse_attn operation.
-python -m pip install triton==1.0.0
-python -m pip install pydantic==1.10.11
+# python -m pip install triton==1.0.0
+# python -m pip install pydantic==1.10.11
 # We explicitly build only the async-I/O, fused Adam, and utils extensions in DeepSpeed.
 # This avoids depending on `triton` here which interacts badly with PyTorch's dependency on same.
 # You can see all the ops here: https://github.com/augmentcode/DeeperSpeed/tree/augment/op_builder
