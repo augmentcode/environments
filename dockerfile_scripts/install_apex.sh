@@ -12,6 +12,7 @@ if [ "$APEX_GIT" ]; then
     git checkout "$APEX_GIT_VER"
     git apply /tmp/det_dockerfile_scripts/apex.patch
     popd
+    pip install ninja
     pip install \
         --no-cache-dir \
         --no-build-isolation \
@@ -19,6 +20,7 @@ if [ "$APEX_GIT" ]; then
         --config-settings "--build-option=--cuda_ext" \
         "$APEX_DIR"
   else
+    pip install ninja
     pip install \
         --no-cache-dir \
         --no-build-isolation \
