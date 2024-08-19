@@ -23,6 +23,7 @@ CUDA_113_PREFIX := $(REGISTRY_REPO):cuda-11.3-
 CUDA_117_PREFIX := $(REGISTRY_REPO):cuda-11.7-
 CUDA_118_PREFIX := $(REGISTRY_REPO):cuda-11.8-
 CUDA_121_PREFIX := $(REGISTRY_REPO):$(UBUNTU_VERSION)-cuda-12.1-
+CUDA_124_PREFIX := $(REGISTRY_REPO):$(UBUNTU_VERSION)-cuda-12.4-
 ROCM_56_PREFIX := $(REGISTRY_REPO):rocm-5.6-
 
 CPU_SUFFIX := -cpu
@@ -85,6 +86,7 @@ export GPU_CUDA_113_BASE_NAME := $(CUDA_113_PREFIX)base$(GPU_SUFFIX)
 export GPU_CUDA_117_BASE_NAME := $(CUDA_117_PREFIX)base$(GPU_SUFFIX)
 export GPU_CUDA_118_BASE_NAME := $(CUDA_118_PREFIX)base$(GPU_SUFFIX)
 export GPU_CUDA_121_BASE_NAME := $(CUDA_121_PREFIX)base$(GPU_SUFFIX)
+export GPU_CUDA_124_BASE_NAME := $(CUDA_124_PREFIX)base$(GPU_SUFFIX)
 
 # Timeout used by packer for AWS operations. Default is 120 (30 minutes) for
 # waiting for AMI availablity. Bump to 360 attempts = 90 minutes.
@@ -238,6 +240,18 @@ build-gpu-cuda-121-base:
 		-o type=image,push=false \
 		.
 
+.PHONY: build-gpu-cuda-124-base
+build-gpu-cuda-124-base:
+	docker build -f Dockerfile-base-gpu \
+		--build-arg BASE_IMAGE="nvidia/cuda:12.4.1-cudnn-devel-$(UBUNTU_VERSION)" \
+		--build-arg PYTHON_VERSION="$(PYTHON_VERSION_39)" \
+		--build-arg UBUNTU_VERSION="$(UBUNTU_VERSION)" \
+		--build-arg "$(MPI_BUILD_ARG)" \
+		-t $(DOCKERHUB_REGISTRY)/$(GPU_CUDA_124_BASE_NAME)-$(SHORT_GIT_HASH) \
+		-t $(DOCKERHUB_REGISTRY)/$(GPU_CUDA_124_BASE_NAME)-$(VERSION) \
+		-o type=image,push=false \
+		.
+
 export CPU_TF1_ENVIRONMENT_NAME := $(CPU_PREFIX_37)pytorch-1.7-tf-1.15$(CPU_SUFFIX)
 export GPU_TF1_ENVIRONMENT_NAME := $(CUDA_102_PREFIX)pytorch-1.7-tf-1.15$(GPU_SUFFIX)
 
@@ -319,9 +333,11 @@ export GPU_DEEPSPEED_ENVIRONMENT_NAME := $(CUDA_117_PREFIX)pytorch-1.13-tf-2.8-d
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME := $(CUDA_117_PREFIX)$(PY_39_TAG)pytorch-1.13-gpt-neox-deepspeed$(GPU_SUFFIX)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_201 := $(CUDA_118_PREFIX)$(PY_39_TAG)pytorch-2.0.1-gpt-neox-deepspeed$(GPU_SUFFIX)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_210 := $(CUDA_121_PREFIX)$(PY_39_TAG)pytorch-2.1.0-gpt-neox-deepspeed$(GPU_SUFFIX)
+export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_240 := $(CUDA_124_PREFIX)$(PY_39_TAG)pytorch-2.4.0-gpt-neox-deepspeed$(GPU_SUFFIX)
 export TORCH_PIP_DEEPSPEED_GPU := torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1+cu117 -f https://download.pytorch.org/whl/cu117/torch_stable.html
 export TORCH_PIP_DEEPSPEED_GPU_201 := torch==2.0.1+cu118 torchvision==0.15.2+cu118 torchaudio==2.0.2+cu118 -f https://download.pytorch.org/whl/cu118/torch_stable.html
 export TORCH_PIP_DEEPSPEED_GPU_210 := torch==2.1.0+cu121 torchvision==0.16.0+cu121 torchaudio==2.1.0+cu121 -f https://download.pytorch.org/whl/cu121/torch_stable.html
+export TORCH_PIP_DEEPSPEED_GPU_240 := torch==2.4.0+cu124 torchvision==0.19.0+cu124 torchaudio==2.4.0+cu124 --index-url https://download.pytorch.org/whl/cu124
 export TORCH_TB_PROFILER_PIP := torch-tb-profiler==0.4.1
 
 # This builds deepspeed environment off of upstream microsoft/DeepSpeed.
@@ -353,6 +369,9 @@ augment-torch-201: build-gpt-neox-deepspeed-gpu-torch-201
 
 .PHONY: augment-torch-210
 augment-torch-210: build-gpt-neox-deepspeed-gpu-torch-210
+
+.PHONY: augment-torch-240
+augment-torch-240: build-gpt-neox-deepspeed-gpu-torch-240
 
 # This builds deepspeed environment off of a patched version of EleutherAI's fork of DeepSpeed
 # that we need for gpt-neox support.
@@ -409,6 +428,20 @@ build-gpt-neox-deepspeed-gpu-torch-210: build-gpu-cuda-121-base
 		--build-arg DEEPSPEED_PIP="git+https://github.com/augmentcode/DeeperSpeed.git@d08ec4e806ace0721026dd83067ca43ddc697e15" \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_210)-$(SHORT_GIT_HASH) \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_210)-$(VERSION) \
+		-o type=image,push=false \
+		.
+
+.PHONY: build-gpt-neox-deepspeed-gpu-torch-240
+build-gpt-neox-deepspeed-gpu-torch-240: build-gpu-cuda-124-base
+	docker build -f Dockerfile-default-gpu \
+		--build-arg BASE_IMAGE="$(DOCKERHUB_REGISTRY)/$(GPU_CUDA_124_BASE_NAME)-$(SHORT_GIT_HASH)" \
+		--build-arg TORCH_PIP="$(TORCH_PIP_DEEPSPEED_GPU_240)" \
+		--build-arg TORCH_TB_PROFILER_PIP="$(TORCH_TB_PROFILER_PIP)" \
+		--build-arg TORCH_CUDA_ARCH_LIST="7.0;7.5;8.0;8.6;9.0" \
+		--build-arg DET_BUILD_NCCL="" \
+		--build-arg DEEPSPEED_PIP="git+https://github.com/augmentcode/DeeperSpeed.git@d08ec4e806ace0721026dd83067ca43ddc697e15" \
+		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_240)-$(SHORT_GIT_HASH) \
+		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_240)-$(VERSION) \
 		-o type=image,push=false \
 		.
 
@@ -715,4 +748,4 @@ publish-cloud-images:
 	cd cloud \
 		&& packer build $(PACKER_FLAGS) -machine-readable -var "image_suffix=-$(SHORT_GIT_HASH)" environments-packer.json \
 		| tee $(ARTIFACTS_DIR)/packer-log
-		
+
