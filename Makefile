@@ -181,7 +181,8 @@ build-gpu-cuda-118-base:
 # https://docs.nvidia.com/deeplearning/frameworks/support-matrix/index.html
 NGC_PYTORCH_PREFIX := nvcr.io/nvidia/pytorch
 NGC_TENSORFLOW_PREFIX := nvcr.io/nvidia/tensorflow
-NGC_PYTORCH_VERSION := 23.07-py3  # torch 23.07 cuda 12.1.1
+# torch 23.07 cuda 12.1.1
+NGC_PYTORCH_VERSION := 23.07-py3
 NGC_TENSORFLOW_VERSION := 23.07-tf2-py3
 
 # build hpc together since hpc is dependent on the normal build
