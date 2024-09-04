@@ -16,5 +16,6 @@ export DS_BUILD_RAGGED_DEVICE_OPS=0
 
 #Remove 5.2 from TORCH_CUDA_ARCH_LIST, it is no longer supported by deepspeed
 export TORCH_CUDA_ARCH_LIST=`echo $TORCH_CUDA_ARCH_LIST|sed 's/5.2 //'`
-python -m pip install $DEEPSPEED_PIP --no-binary deepspeed
+python -m pip install numpy==1.26.0
+python -m pip install numpy==1.26.0 $DEEPSPEED_PIP --no-binary deepspeed
 python -m deepspeed.env_report

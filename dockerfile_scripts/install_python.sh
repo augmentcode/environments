@@ -28,6 +28,9 @@ echo "${CONDA_SHA256}  ${CONDA_INSTALLER}" | sha256sum ${CONDA_INSTALLER}
 bash "./${CONDA_INSTALLER}" -u -b -p "${CONDA_DIR}"
 rm -f "./${CONDA_INSTALLER}"
 
+export PATH="${CONDA_DIR}/bin:${PATH}"
+
+# Install Python.
 conda install python=${PYTHON_VERSION}
 conda update --prefix ${CONDA_DIR} --all -y
 conda clean --all -f -y

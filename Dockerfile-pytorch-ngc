@@ -11,6 +11,18 @@ RUN /tmp/det_dockerfile_scripts/install_deb_packages.sh
 RUN /tmp/det_dockerfile_scripts/add_det_nobody_user.sh
 RUN /tmp/det_dockerfile_scripts/install_libnss_determined.sh
 
+# Augment upgrade to the correct version of python
+ARG PYTHON_VERSION=3.11.7
+RUN /tmp/det_dockerfile_scripts/install_python.sh $PYTHON_VERSION
+ENV PATH="/opt/conda/bin:${PATH}"
+
+RUN python -m pip install -U pip && \
+    python -m pip install \
+        torch==2.3.0+cu121 \
+        torchvision==0.18.0+cu121 \
+        torchaudio==2.3.0+cu121 \
+        -f https://download.pytorch.org/whl/cu121/torch_stable.html
+
 # We uninstall these packages after installing. This ensures that we can
 # successfully install these packages into containers running as non-root.
 # `pip` does not uninstall dependencies, so we still have all the dependencies
@@ -29,6 +41,8 @@ ENV JUPYTER_DATA_DIR=/run/determined/jupyter/data
 ENV JUPYTER_RUNTIME_DIR=/run/determined/jupyter/runtime
 
 RUN /tmp/det_dockerfile_scripts/install_google_cloud_sdk.sh
+
+# ARG DEEPSPEED_PIP="deepspeed@git+https://github.com/augmentcode/DeeperSpeed.git@40617c259ff7aacacdd2f994006d1a29c97628f5"
 
 ENV DEEPSPEED_PIP="deepspeed==0.13.0"
 RUN /tmp/det_dockerfile_scripts/install_deepspeed.sh
