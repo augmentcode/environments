@@ -5,7 +5,7 @@ SHORT_GIT_HASH := $(shell git rev-parse --short HEAD)
 
 NGC_REGISTRY := nvcr.io/isv-ngc-partner/determined
 NGC_PUBLISH := 1
-export DOCKERHUB_REGISTRY := au-docker-reg.tenant-augment-eng.ord1.ingress.coreweave.cloud
+export DOCKERHUB_REGISTRY := harbor-master.r.augmentcode.com/master
 export REGISTRY_REPO := dai_environments
 
 UBUNTU_VERSION_2004 := ubuntu20.04
