@@ -348,12 +348,12 @@ export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME := $(CUDA_117_PREFIX)$(PY_39_TAG)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_201 := $(CUDA_118_PREFIX)$(PY_39_TAG)pytorch-2.0.1-gpt-neox-deepspeed$(GPU_SUFFIX)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_210 := $(CUDA_121_PREFIX)$(PY_39_TAG)pytorch-2.1.0-gpt-neox-deepspeed$(GPU_SUFFIX)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_240 := $(CUDA_124_PREFIX)$(PY_39_TAG)pytorch-2.4.0-gpt-neox-deepspeed$(GPU_SUFFIX)
-export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_290 := $(CUDA_129_PREFIX)$(PY_39_TAG)pytorch-2.9.0-gpt-neox-deepspeed$(GPU_SUFFIX)
+export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_280 := $(CUDA_129_PREFIX)$(PY_39_TAG)pytorch-2.8.0-gpt-neox-deepspeed$(GPU_SUFFIX)
 export TORCH_PIP_DEEPSPEED_GPU := torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1+cu117 -f https://download.pytorch.org/whl/cu117/torch_stable.html
 export TORCH_PIP_DEEPSPEED_GPU_201 := torch==2.0.1+cu118 torchvision==0.15.2+cu118 torchaudio==2.0.2+cu118 -f https://download.pytorch.org/whl/cu118/torch_stable.html
 export TORCH_PIP_DEEPSPEED_GPU_210 := torch==2.1.0+cu121 torchvision==0.16.0+cu121 torchaudio==2.1.0+cu121 -f https://download.pytorch.org/whl/cu121/torch_stable.html
 export TORCH_PIP_DEEPSPEED_GPU_240 := torch==2.4.0+cu124 torchvision==0.19.0+cu124 torchaudio==2.4.0+cu124 --index-url https://download.pytorch.org/whl/cu124
-export TORCH_PIP_DEEPSPEED_GPU_290 := torch==2.9.0+cu129 torchvision==0.24.0+cu129 torchaudio==2.9.0+cu129 --index-url https://download.pytorch.org/whl/cu129
+export TORCH_PIP_DEEPSPEED_GPU_280 := torch==2.8.0+cu129 torchvision==0.24.0+cu129 torchaudio==2.8.0+cu129 --index-url https://download.pytorch.org/whl/cu129
 export TORCH_TB_PROFILER_PIP := torch-tb-profiler==0.4.1
 
 # This builds deepspeed environment off of upstream microsoft/DeepSpeed.
@@ -389,8 +389,8 @@ augment-torch-210: build-gpt-neox-deepspeed-gpu-torch-210
 .PHONY: augment-torch-240
 augment-torch-240: build-gpt-neox-deepspeed-gpu-torch-240
 
-.PHONY: augment-torch-290
-augment-torch-290: build-gpt-neox-deepspeed-gpu-torch-290
+.PHONY: augment-torch-280
+augment-torch-280: build-gpt-neox-deepspeed-gpu-torch-280
 
 # This builds deepspeed environment off of a patched version of EleutherAI's fork of DeepSpeed
 # that we need for gpt-neox support.
@@ -464,17 +464,17 @@ build-gpt-neox-deepspeed-gpu-torch-240: build-gpu-cuda-124-base
 		-o type=image,push=false \
 		.
 
-.PHONY: build-gpt-neox-deepspeed-gpu-torch-290
-build-gpt-neox-deepspeed-gpu-torch-290: build-gpu-cuda-129-base
+.PHONY: build-gpt-neox-deepspeed-gpu-torch-280
+build-gpt-neox-deepspeed-gpu-torch-280: build-gpu-cuda-129-base
 	docker build -f Dockerfile-default-gpu \
 		--build-arg BASE_IMAGE="$(DOCKERHUB_REGISTRY)/$(GPU_CUDA_129_BASE_NAME)-$(SHORT_GIT_HASH)" \
-		--build-arg TORCH_PIP="$(TORCH_PIP_DEEPSPEED_GPU_290)" \
+		--build-arg TORCH_PIP="$(TORCH_PIP_DEEPSPEED_GPU_280)" \
 		--build-arg TORCH_TB_PROFILER_PIP="$(TORCH_TB_PROFILER_PIP)" \
 		--build-arg TORCH_CUDA_ARCH_LIST="7.0;7.5;8.0;8.6;9.0;10.0" \
 		--build-arg DET_BUILD_NCCL="" \
 		--build-arg DEEPSPEED_PIP="git+https://github.com/augmentcode/DeeperSpeed.git@d08ec4e806ace0721026dd83067ca43ddc697e15" \
-		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_290)-$(SHORT_GIT_HASH) \
-		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_290)-$(VERSION) \
+		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_280)-$(SHORT_GIT_HASH) \
+		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_280)-$(VERSION) \
 		-o type=image,push=false \
 		.
 
