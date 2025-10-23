@@ -470,7 +470,7 @@ build-gpt-neox-deepspeed-gpu-torch-280: build-gpu-cuda-129-base
 		--build-arg BASE_IMAGE="$(DOCKERHUB_REGISTRY)/$(GPU_CUDA_129_BASE_NAME)-$(SHORT_GIT_HASH)" \
 		--build-arg TORCH_PIP="$(TORCH_PIP_DEEPSPEED_GPU_280)" \
 		--build-arg TORCH_TB_PROFILER_PIP="$(TORCH_TB_PROFILER_PIP)" \
-		--build-arg TORCH_CUDA_ARCH_LIST="7.0;7.5;8.0;8.6;9.0;10.0" \
+		--build-arg TORCH_CUDA_ARCH_LIST="7.0;7.5;8.0;8.6;9.0" \
 		--build-arg DET_BUILD_NCCL="" \
 		--build-arg DEEPSPEED_PIP="git+https://github.com/augmentcode/DeeperSpeed.git@d08ec4e806ace0721026dd83067ca43ddc697e15" \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_280)-$(SHORT_GIT_HASH) \
