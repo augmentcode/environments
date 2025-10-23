@@ -35,6 +35,7 @@ PYTHON_VERSION_37 := 3.7.11
 PYTHON_VERSION_38 := 3.8.12
 PYTHON_VERSION_39 := 3.9.16
 PYTHON_VERSION_310 := 3.10.12
+PYTHON_VERSION_311 := 3.11.7
 PY_37_TAG := py-3.7-
 PY_38_TAG := py-3.8-
 PY_39_TAG := py-3.9-
@@ -258,7 +259,7 @@ build-gpu-cuda-124-base:
 build-gpu-cuda-129-base:
 	docker build -f Dockerfile-base-gpu \
 		--build-arg BASE_IMAGE="nvidia/cuda:12.9.1-cudnn-devel-$(UBUNTU_VERSION)" \
-		--build-arg PYTHON_VERSION="$(PYTHON_VERSION_39)" \
+		--build-arg PYTHON_VERSION="$(PYTHON_VERSION_311)" \
 		--build-arg UBUNTU_VERSION="$(UBUNTU_VERSION)" \
 		--build-arg "$(MPI_BUILD_ARG)" \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_CUDA_129_BASE_NAME)-$(SHORT_GIT_HASH) \
