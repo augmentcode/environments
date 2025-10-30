@@ -17,6 +17,8 @@ UBUNTU_VERSION_1804 := ubuntu18.04
 CPU_PREFIX_38 := $(REGISTRY_REPO):py-3.8-
 CPU_PREFIX_39 := $(REGISTRY_REPO):py-3.9-
 CPU_PREFIX_310 := $(REGISTRY_REPO):py-3.10-
+CPU_PREFIX_311 := $(REGISTRY_REPO):py-3.11-
+
 CUDA_111_PREFIX := $(REGISTRY_REPO):cuda-11.1-
 CUDA_112_PREFIX := $(REGISTRY_REPO):cuda-11.2-
 CUDA_113_PREFIX := $(REGISTRY_REPO):cuda-11.3-
@@ -24,6 +26,7 @@ CUDA_117_PREFIX := $(REGISTRY_REPO):cuda-11.7-
 CUDA_118_PREFIX := $(REGISTRY_REPO):cuda-11.8-
 CUDA_121_PREFIX := $(REGISTRY_REPO):$(UBUNTU_VERSION)-cuda-12.1-
 CUDA_124_PREFIX := $(REGISTRY_REPO):$(UBUNTU_VERSION)-cuda-12.4-
+CUDA_128_PREFIX := $(REGISTRY_REPO):$(UBUNTU_VERSION)-cuda-12.8-
 CUDA_129_PREFIX := $(REGISTRY_REPO):$(UBUNTU_VERSION)-cuda-12.9-
 ROCM_56_PREFIX := $(REGISTRY_REPO):rocm-5.6-
 
@@ -39,6 +42,8 @@ PYTHON_VERSION_311 := 3.11.7
 PY_37_TAG := py-3.7-
 PY_38_TAG := py-3.8-
 PY_39_TAG := py-3.9-
+PY_310_TAG := py-3.10-
+PY_311_TAG := py-3.11-
 PLATFORM_LINUX_ARM_64 := linux/arm64
 PLATFORM_LINUX_AMD_64 := linux/amd64
 HOROVOD_GPU_OPERATIONS := NCCL
@@ -82,6 +87,7 @@ endif
 export CPU_PY_38_BASE_NAME := $(CPU_PREFIX_38)base$(CPU_SUFFIX)
 export CPU_PY_39_BASE_NAME := $(CPU_PREFIX_39)base$(CPU_SUFFIX)
 export CPU_PY_310_BASE_NAME := $(CPU_PREFIX_310)base$(CPU_SUFFIX)
+export CPU_PY_311_BASE_NAME := $(CPU_PREFIX_311)base$(CPU_SUFFIX)
 export GPU_CUDA_111_BASE_NAME := $(CUDA_111_PREFIX)base$(GPU_SUFFIX)
 export GPU_CUDA_112_BASE_NAME := $(CUDA_112_PREFIX)base$(GPU_SUFFIX)
 export GPU_CUDA_113_BASE_NAME := $(CUDA_113_PREFIX)base$(GPU_SUFFIX)
@@ -89,6 +95,7 @@ export GPU_CUDA_117_BASE_NAME := $(CUDA_117_PREFIX)base$(GPU_SUFFIX)
 export GPU_CUDA_118_BASE_NAME := $(CUDA_118_PREFIX)base$(GPU_SUFFIX)
 export GPU_CUDA_121_BASE_NAME := $(CUDA_121_PREFIX)base$(GPU_SUFFIX)
 export GPU_CUDA_124_BASE_NAME := $(CUDA_124_PREFIX)base$(GPU_SUFFIX)
+export GPU_CUDA_128_BASE_NAME := $(CUDA_128_PREFIX)base$(GPU_SUFFIX)
 export GPU_CUDA_129_BASE_NAME := $(CUDA_129_PREFIX)base$(GPU_SUFFIX)
 
 # Timeout used by packer for AWS operations. Default is 120 (30 minutes) for
@@ -255,6 +262,18 @@ build-gpu-cuda-124-base:
 		-o type=image,push=false \
 		.
 
+.PHONY: build-gpu-cuda-128-base
+build-gpu-cuda-128-base:
+	docker build -f Dockerfile-base-gpu \
+		--build-arg BASE_IMAGE="nvidia/cuda:12.8.1-cudnn-devel-$(UBUNTU_VERSION)" \
+		--build-arg PYTHON_VERSION="$(PYTHON_VERSION_311)" \
+		--build-arg UBUNTU_VERSION="$(UBUNTU_VERSION)" \
+		--build-arg "$(MPI_BUILD_ARG)" \
+		-t $(DOCKERHUB_REGISTRY)/$(GPU_CUDA_128_BASE_NAME)-$(SHORT_GIT_HASH) \
+		-t $(DOCKERHUB_REGISTRY)/$(GPU_CUDA_128_BASE_NAME)-$(VERSION) \
+		-o type=image,push=false \
+		.
+
 .PHONY: build-gpu-cuda-129-base
 build-gpu-cuda-129-base:
 	docker build -f Dockerfile-base-gpu \
@@ -349,11 +368,13 @@ export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME := $(CUDA_117_PREFIX)$(PY_39_TAG)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_201 := $(CUDA_118_PREFIX)$(PY_39_TAG)pytorch-2.0.1-gpt-neox-deepspeed$(GPU_SUFFIX)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_210 := $(CUDA_121_PREFIX)$(PY_39_TAG)pytorch-2.1.0-gpt-neox-deepspeed$(GPU_SUFFIX)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_240 := $(CUDA_124_PREFIX)$(PY_39_TAG)pytorch-2.4.0-gpt-neox-deepspeed$(GPU_SUFFIX)
+export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_270 := $(CUDA_128_PREFIX)$(PY_311_TAG)pytorch-2.7.0-gpt-neox-deepspeed$(GPU_SUFFIX)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_280 := $(CUDA_129_PREFIX)$(PY_39_TAG)pytorch-2.8.0-gpt-neox-deepspeed$(GPU_SUFFIX)
 export TORCH_PIP_DEEPSPEED_GPU := torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1+cu117 -f https://download.pytorch.org/whl/cu117/torch_stable.html
 export TORCH_PIP_DEEPSPEED_GPU_201 := torch==2.0.1+cu118 torchvision==0.15.2+cu118 torchaudio==2.0.2+cu118 -f https://download.pytorch.org/whl/cu118/torch_stable.html
 export TORCH_PIP_DEEPSPEED_GPU_210 := torch==2.1.0+cu121 torchvision==0.16.0+cu121 torchaudio==2.1.0+cu121 -f https://download.pytorch.org/whl/cu121/torch_stable.html
 export TORCH_PIP_DEEPSPEED_GPU_240 := torch==2.4.0+cu124 torchvision==0.19.0+cu124 torchaudio==2.4.0+cu124 --index-url https://download.pytorch.org/whl/cu124
+export TORCH_PIP_DEEPSPEED_GPU_270 := torch==2.7.0+cu128 torchvision==0.22.0+cu128 torchaudio==2.7.0+cu128 --index-url https://download.pytorch.org/whl/cu128
 export TORCH_PIP_DEEPSPEED_GPU_280 := torch==2.8.0+cu129 torchvision==0.23.0+cu129 torchaudio==2.8.0+cu129 --index-url https://download.pytorch.org/whl/cu129
 export TORCH_TB_PROFILER_PIP := torch-tb-profiler==0.4.1
 
@@ -389,6 +410,9 @@ augment-torch-210: build-gpt-neox-deepspeed-gpu-torch-210
 
 .PHONY: augment-torch-240
 augment-torch-240: build-gpt-neox-deepspeed-gpu-torch-240
+
+.PHONY: augment-torch-270
+augment-torch-270: build-gpt-neox-deepspeed-gpu-torch-270
 
 .PHONY: augment-torch-280
 augment-torch-280: build-gpt-neox-deepspeed-gpu-torch-280
@@ -462,6 +486,20 @@ build-gpt-neox-deepspeed-gpu-torch-240: build-gpu-cuda-124-base
 		--build-arg DEEPSPEED_PIP="git+https://github.com/augmentcode/DeeperSpeed.git@d08ec4e806ace0721026dd83067ca43ddc697e15" \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_240)-$(SHORT_GIT_HASH) \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_240)-$(VERSION) \
+		-o type=image,push=false \
+		.
+
+.PHONY: build-gpt-neox-deepspeed-gpu-torch-270
+build-gpt-neox-deepspeed-gpu-torch-270: build-gpu-cuda-128-base
+	docker build -f Dockerfile-default-gpu \
+		--build-arg BASE_IMAGE="$(DOCKERHUB_REGISTRY)/$(GPU_CUDA_128_BASE_NAME)-$(SHORT_GIT_HASH)" \
+		--build-arg TORCH_PIP="$(TORCH_PIP_DEEPSPEED_GPU_270)" \
+		--build-arg TORCH_TB_PROFILER_PIP="$(TORCH_TB_PROFILER_PIP)" \
+		--build-arg TORCH_CUDA_ARCH_LIST="7.0;7.5;8.0;8.6;9.0" \
+		--build-arg DET_BUILD_NCCL="" \
+		--build-arg DEEPSPEED_PIP="git+https://github.com/augmentcode/DeeperSpeed.git@d08ec4e806ace0721026dd83067ca43ddc697e15" \
+		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_270)-$(SHORT_GIT_HASH) \
+		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_270)-$(VERSION) \
 		-o type=image,push=false \
 		.
 
