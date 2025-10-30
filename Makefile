@@ -369,7 +369,7 @@ export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_201 := $(CUDA_118_PREFIX)$(PY_39_
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_210 := $(CUDA_121_PREFIX)$(PY_39_TAG)pytorch-2.1.0-gpt-neox-deepspeed$(GPU_SUFFIX)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_240 := $(CUDA_124_PREFIX)$(PY_39_TAG)pytorch-2.4.0-gpt-neox-deepspeed$(GPU_SUFFIX)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_270 := $(CUDA_128_PREFIX)$(PY_311_TAG)pytorch-2.7.0-gpt-neox-deepspeed$(GPU_SUFFIX)
-export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_280 := $(CUDA_129_PREFIX)$(PY_39_TAG)pytorch-2.8.0-gpt-neox-deepspeed$(GPU_SUFFIX)
+export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_280 := $(CUDA_129_PREFIX)$(PY_311_TAG)pytorch-2.8.0-gpt-neox-deepspeed$(GPU_SUFFIX)
 export TORCH_PIP_DEEPSPEED_GPU := torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1+cu117 -f https://download.pytorch.org/whl/cu117/torch_stable.html
 export TORCH_PIP_DEEPSPEED_GPU_201 := torch==2.0.1+cu118 torchvision==0.15.2+cu118 torchaudio==2.0.2+cu118 -f https://download.pytorch.org/whl/cu118/torch_stable.html
 export TORCH_PIP_DEEPSPEED_GPU_210 := torch==2.1.0+cu121 torchvision==0.16.0+cu121 torchaudio==2.1.0+cu121 -f https://download.pytorch.org/whl/cu121/torch_stable.html
