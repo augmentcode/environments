@@ -264,7 +264,7 @@ build-gpu-cuda-124-base:
 build-gpu-cuda-128-base:
 	docker build -f Dockerfile-base-gpu \
 		--build-arg BASE_IMAGE="nvidia/cuda:12.8.1-cudnn-devel-$(UBUNTU_VERSION)" \
-		--build-arg PYTHON_VERSION="$(PYTHON_VERSION_39)" \
+		--build-arg PYTHON_VERSION="$(PYTHON_VERSION_311)" \
 		--build-arg UBUNTU_VERSION="$(UBUNTU_VERSION)" \
 		--build-arg "$(MPI_BUILD_ARG)" \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_CUDA_128_BASE_NAME)-$(SHORT_GIT_HASH) \
@@ -354,7 +354,7 @@ export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME := $(CUDA_117_PREFIX)$(PY_39_TAG)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_201 := $(CUDA_118_PREFIX)$(PY_39_TAG)pytorch-2.0.1-gpt-neox-deepspeed$(GPU_SUFFIX)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_210 := $(CUDA_121_PREFIX)$(PY_39_TAG)pytorch-2.1.0-gpt-neox-deepspeed$(GPU_SUFFIX)
 export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_240 := $(CUDA_124_PREFIX)$(PY_39_TAG)pytorch-2.4.0-gpt-neox-deepspeed$(GPU_SUFFIX)
-export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_270 := $(CUDA_128_PREFIX)$(PY_39_TAG)pytorch-2.7.0-gpt-neox-deepspeed$(GPU_SUFFIX)
+export GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_270 := $(CUDA_128_PREFIX)$(PY_311_TAG)pytorch-2.7.0-gpt-neox-deepspeed$(GPU_SUFFIX)
 export TORCH_PIP_DEEPSPEED_GPU := torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1+cu117 -f https://download.pytorch.org/whl/cu117/torch_stable.html
 export TORCH_PIP_DEEPSPEED_GPU_201 := torch==2.0.1+cu118 torchvision==0.15.2+cu118 torchaudio==2.0.2+cu118 -f https://download.pytorch.org/whl/cu118/torch_stable.html
 export TORCH_PIP_DEEPSPEED_GPU_210 := torch==2.1.0+cu121 torchvision==0.16.0+cu121 torchaudio==2.1.0+cu121 -f https://download.pytorch.org/whl/cu121/torch_stable.html
