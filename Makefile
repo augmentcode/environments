@@ -277,7 +277,7 @@ build-gpu-cuda-128-base:
 .PHONY: build-gpu-cuda-129-base
 build-gpu-cuda-129-base:
 	docker build -f Dockerfile-base-gpu \
-		--build-arg BASE_IMAGE="nvidia/cuda:12.9.1-cudnn-devel-$(UBUNTU_VERSION)" \
+		--build-arg BASE_IMAGE="nvidia/cuda:12.9.1-devel-$(UBUNTU_VERSION)" \
 		--build-arg PYTHON_VERSION="$(PYTHON_VERSION_311)" \
 		--build-arg UBUNTU_VERSION="$(UBUNTU_VERSION)" \
 		--build-arg "$(MPI_BUILD_ARG)" \
@@ -508,7 +508,7 @@ build-gpt-neox-deepspeed-gpu-torch-280: build-gpu-cuda-129-base
 		--build-arg TORCH_TB_PROFILER_PIP="$(TORCH_TB_PROFILER_PIP)" \
 		--build-arg TORCH_CUDA_ARCH_LIST="7.0;7.5;8.0;8.6;9.0;10.0" \
 		--build-arg DET_BUILD_NCCL="" \
-		--build-arg DEEPSPEED_PIP="git+https://github.com/augmentcode/DeeperSpeed.git@781fd34a7f211a145984c964bd60d849161f3532" \
+		--build-arg DEEPSPEED_PIP="git+https://github.com/augmentcode/DeeperSpeed.git@401971005ff66a284fff46518214cca87ed37ba6" \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_280)-$(SHORT_GIT_HASH) \
 		-t $(DOCKERHUB_REGISTRY)/$(GPU_GPT_NEOX_DEEPSPEED_ENVIRONMENT_NAME_280)-$(VERSION) \
 		-o type=image,push=false \
